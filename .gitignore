@@ -5,3 +5,4 @@ dataset/
 *.parquet
 *.jpg
 *.jpeg
+.DS_Store
