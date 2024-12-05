@@ -27,3 +27,18 @@ anomaly."
   - "Evaluate the results for the synthetic anomalies."
   - "Analyze whether the anomalies can be detected effectively in the real test data, and compare them with your previous model developed specifically for the target unit."
   - "Propose potential strategies to improve the transferability of the model. What if you had access to a limited amount of training data for the target unit?"
+
+## TA suggestions
+
+- try to use simple models to check feature importance -> quick iteration using simple models (sugggested additive models)
+- Timestamp info -> incorporate it by looking at data and finding some frequency that makes sense (maybe data is somewhat 24h periodic, or weekly periodic, etc.) -> feed this into a "sine encoding" with a certain frequency
+- also can look if difference every weekend, or something and use boolean (isWeekend, etc)
+- latent space probably better to compare similarity between healthy and anomaly
+- use latent space features for anomaly detection algo
+- commit to one or few model (eg. regression with CNN, autoencoder-based -> either residual based or latent features into anomaly detection algo like isolation forest)
+- start writing report now
+- explain that we did all the basic things (data cleaning, scaling, pre-processing, hyperparam tuning, EDA, ... josh's favorite slide)
+  - approach by working on a single pipeline (one machine, one sensor target), finding what works and applying the pipeline elsewhere. preiodic sanity checks on other targets. 
+  - data preproc -> naive baseline model -> 2 approaches : regression (show RF + CNN), unsupervised (autoencoder + anomaly detection), + really show all that we did, our assumptions, the potential pitfalls and what we could have done better, what we would do if we had more time, bullshit something for all points in pipeline. 
+- for detecting root cause: look at what sensor has biggest reconstruction error (make sure everything is standardized). Maybe simple classifier just to show we tried (classification from reconstruction errors into synthetic anomaly type). 
+- add lagged feature
