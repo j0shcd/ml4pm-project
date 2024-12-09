@@ -9,12 +9,12 @@
 ### Regression Model
 - build basic CNN to try and regress all control vars into a "measurement type" vector (stat_coil_tmp, water_circ_flow, ph_current, ...)
 - use cross-validation/dataloaders w/ CNN
-- predict "probability of anomaly" from 0 to 1 for each sample based on reconstruction error
+- predict "probability of anomaly" from 0 to 1 for each sample based on normalised reconstruction error
 
 ### Unsupervised Learning Model
 - Train autoencoder on VG5 pump/turbine
 - Compare distance (can use MSE) between bottleneck layers (when input is healthy vs anomaly). Threshold based on this like before (3 standard deviations away from mean)
-- predict "probability of anomaly" for autoencoder for each sample.
+- predict "probability of anomaly" for autoencoder for each sample by normalising reconstruction error.
 
 ### Isolation Forest
 - Use bottleneck features as input to isolation forest
@@ -22,8 +22,9 @@
 - pick whichever performs best
 
 ### Anomaly Score
-- get vote from CNN regression model, vote from autoencoder, vote from isolation forest (binary)
-- average out "certainty" of prediction -> anomaly score for each timestamp
+- get output from all relevant models
+- average it out (single vote for each model? weight by individual performance?)
+- -> anomaly score for each timestamp
 - if probability > some threshold, for some amount of time (like 2 timestamps) -> anomaly
 - don't think about it too much. Pick some threshold that makes sense (eg 3 standard deviations away from mean) and voila.
 
