@@ -25,7 +25,7 @@
 - get output from all relevant models
 - average it out (single vote for each model? weight by individual performance?)
 - -> anomaly score for each timestamp
-- if probability > some threshold, for some amount of time (like 2 timestamps) -> anomaly
+- if probability > some threshold (3 std), for some amount of time (like 2 timestamps) -> anomaly
 - don't think about it too much. Pick some threshold that makes sense (eg 3 standard deviations away from mean) and voila.
 
 ### Root cause identification
@@ -43,6 +43,17 @@
 - try adversarial domain adaptation on autoencoder -> add discriminator to try and guess source and target domains
 - with regression CNN -> also have adversarial domain adaptation between convolutional layers and prediction layers. 
 - get results with domain adaptation
+
+### file structure/organisation
+- EDA -> random EDA file showing the EDA we did for report
+- data_preprocessing 
+- regression_models -> Random forest, CNN
+- unsupervised_models -> Autoencoder, Isolation Forest
+- anomaly_score -> get full output from models, combine into anomaly score.
+- root_cause -> get full output from models, build classifier
+- Alpiq_model -> build manual threshold model, compare with anomaly score
+- domain_adaptation_models -> build regression CNN and Autoencoder again, but this time with adversarial domain adaptation.
+- DA_anomaly_detection -> get full output from DA models, get new anomaly score. Get old anomaly score. Compare results on different datasets. 
 
 ## TA suggestions
 
