@@ -1,32 +1,43 @@
-## Things to try to get better model
+## Things to do now (summary)
 
-- get a way to compare between models using the F1-score
-  - get a ROC curve if possible, and choose the threshold with the highest f1-score
+### pre-processing
+- understand what breaks random forest
+- give a "sine encoding" of time of day as extra feature
+- find dominant frequency, get sine encoding of that too as extra feature
+- add lagged features
 
-- drop useless columns (maybe some are super correlated)
-- trying to cluster according to datetime information
-  - try to figure out a meaningful datetime representation
-- add windowing/moving averages to the dataset
-- try to somehow remove seasonality
-- find outliers in the healthy data, understand if that's normal or not. -> may be causing issues 
-- make sure standardization works
-- try to use dataloaders, and cross validation
-- get model to try and predict the reconstruction of all of the measurements
-- need to group measurement types together? 
-- hard-code temperature thresholds
+### Regression Model
+- build basic CNN to try and regress all control vars into a "measurement type" vector (stat_coil_tmp, water_circ_flow, ph_current, ...)
+- use cross-validation/dataloaders w/ CNN
+- predict "probability of anomaly" from 0 to 1 for each sample based on reconstruction error
 
-## Next steps
+### Unsupervised Learning Model
+- Train autoencoder on VG5 pump/turbine
+- Compare distance (can use MSE) between bottleneck layers (when input is healthy vs anomaly). Threshold based on this
+- Use bottleneck features as input to isolation forest (see if using PCA features performs better)
+- predict "probability of anomaly" for autoencoder for each sample.
 
-- need to generate an anomaly score
-  - combination of many models (ensemble learning), each getting a "vote"
-- feature selection -> understand which variables are most important
-- "Develop a model that automatically outputs the most probable cause of a given
-anomaly."
-  - can use some explicit thresholds (magnetic circuit temp, injector opening, etc)
-- Auxilliary task: 
-  - "Evaluate the results for the synthetic anomalies."
-  - "Analyze whether the anomalies can be detected effectively in the real test data, and compare them with your previous model developed specifically for the target unit."
-  - "Propose potential strategies to improve the transferability of the model. What if you had access to a limited amount of training data for the target unit?"
+### Anomaly Score
+- get vote from CNN regression model, vote from autoencoder, vote from isolation forest (binary)
+- average out "certainty" of prediction -> anomaly score for each timestamp
+- if probability > some threshold, for some amount of time (like 2 timestamps) -> anomaly
+- don't think about it too much. Pick some threshold that makes sense (eg 3 standard deviations away from mean) and voila.
+
+### Root cause identification
+- use autoencoder model -> find out which features are reconstructed most poorly (first root cause layer)
+- feed reconstruction error into a random forest classifier to predict which synthetic anomaly type it is
+  - get performance. OK if shit. At least we tried.
+
+### Compare with manual thresholds
+- compare performance of our anomaly score vs using thresholds from Alpiq
+- have plot showing when threshold is triggered and anomaly score for certain sensor values + when we flag as anomaly, overlaid on some sensor plots
+
+### Transfer between units (auxilary task, domain adaptation)
+- Train model on VG5, test raw performance on VG6 and VG4 without domain adaptation
+- numbers comparing raw performance on source and target domains
+- try adversarial domain adaptation on autoencoder -> add discriminator to try and guess source and target domains
+- with regression CNN -> also have adversarial domain adaptation between convolutional layers and prediction layers. 
+- get results with domain adaptation
 
 ## TA suggestions
 
