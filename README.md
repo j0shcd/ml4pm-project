@@ -13,9 +13,13 @@
 
 ### Unsupervised Learning Model
 - Train autoencoder on VG5 pump/turbine
-- Compare distance (can use MSE) between bottleneck layers (when input is healthy vs anomaly). Threshold based on this
-- Use bottleneck features as input to isolation forest (see if using PCA features performs better)
+- Compare distance (can use MSE) between bottleneck layers (when input is healthy vs anomaly). Threshold based on this like before (3 standard deviations away from mean)
 - predict "probability of anomaly" for autoencoder for each sample.
+
+### Isolation Forest
+- Use bottleneck features as input to isolation forest
+- Use PCA features as input to isolation forest
+- pick whichever performs best
 
 ### Anomaly Score
 - get vote from CNN regression model, vote from autoencoder, vote from isolation forest (binary)
