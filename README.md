@@ -1,10 +1,10 @@
 ## Things to do now (summary)
 
 ### pre-processing
-- understand what breaks random forest
-- give a "sine encoding" of time of day as extra feature
+- understand what breaks random forest (OK -> time features!)
+- give a "sine encoding" of time of day as extra feature (works super well!)
 - find dominant frequency, get sine encoding of that too as extra feature
-- add lagged features
+- add lagged features (OK)
 
 ### Regression Model
 - build basic CNN to try and regress all control vars into a "measurement type" vector (stat_coil_tmp, water_circ_flow, ph_current, ...)
