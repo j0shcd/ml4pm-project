@@ -3,13 +3,13 @@
 ### pre-processing
 - understand what breaks random forest (OK -> time features!)
 - give a "sine encoding" of time of day as extra feature (works super well!)
-- find dominant frequency, get sine encoding of that too as extra feature
 - add lagged features (OK)
 
 ### Regression Model
 - build basic CNN to try and regress all control vars into a "measurement type" vector (stat_coil_tmp, water_circ_flow, ph_current, ...)
 - use cross-validation/dataloaders w/ CNN
 - predict "probability of anomaly" from 0 to 1 for each sample based on normalised reconstruction error
+- domain shift between training and test data: some form of domain adaptation is probably good. 
 
 ### Unsupervised Learning Model
 - Train autoencoder on VG5 pump/turbine
